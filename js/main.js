@@ -20,6 +20,9 @@ class TheLastArchive {
     this.setupFilters();
     this.renderCards();
 
+    // Chronicle fragments animation
+    this.animateChronicles();
+
     // Entry animation
     this.animateEntryIn();
 
@@ -270,6 +273,59 @@ class TheLastArchive {
     if (el) {
       el.textContent = this.observerCount;
     }
+  }
+
+  animateChronicles() {
+    const fragments = document.querySelectorAll('.chronicle-fragment');
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    fragments.forEach((el, i) => {
+      // Read target position from inline style
+      const targetTop = el.style.top;
+      const targetLeft = el.style.left;
+      const targetRight = el.style.right;
+
+      // Start at center, invisible
+      gsap.set(el, {
+        top: '50%',
+        left: targetLeft ? '50%' : 'auto',
+        right: targetRight ? '50%' : 'auto',
+        xPercent: -50,
+        yPercent: -50,
+        scale: 0.5,
+        opacity: 0,
+      });
+
+      const tl = gsap.timeline({ delay: i * 2.2 }); // stagger each fragment
+
+      // Phase 1: Appear at center, grow
+      tl.to(el, {
+        scale: 1.3,
+        opacity: 0.8,
+        duration: 1.2,
+        ease: 'power2.out',
+      })
+      // Phase 2: Hold for reading
+      .to(el, {
+        scale: 1.3,
+        opacity: 0.8,
+        duration: 1.5,
+        ease: 'none',
+      })
+      // Phase 3: Drift to final position at edge
+      .to(el, {
+        top: targetTop,
+        left: targetLeft || 'auto',
+        right: targetRight || 'auto',
+        xPercent: 0,
+        yPercent: 0,
+        scale: 0.85,
+        opacity: 0.4,
+        duration: 3,
+        ease: 'power3.inOut',
+      });
+    });
   }
 
   showRandomBroadcast() {
