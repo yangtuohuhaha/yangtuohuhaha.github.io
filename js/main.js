@@ -217,10 +217,21 @@ class TheLastArchive {
     card.style.animation = `float-card ${floatDuration}s ease-in-out ${floatDelay}s infinite`;
 
     // Card click → artifact activation
-    card.addEventListener('click', async () => {
-      await transitions.activateArtifact(card, artifact);
-      this.observerCount++;
-      this.updateObserverCount();
+    card.addEventListener('click', () => {
+      // Mobile: skip animation chain, directly open Bilibili
+      const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
+      if (isMobile) {
+        window.open(`https://www.bilibili.com/video/${artifact.bvid}/`, '_blank');
+        this.observerCount++;
+        this.updateObserverCount();
+        return;
+      }
+
+      // Desktop: full animation sequence
+      transitions.activateArtifact(card, artifact).then(() => {
+        this.observerCount++;
+        this.updateObserverCount();
+      });
     });
 
     // Hover effects
