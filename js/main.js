@@ -69,7 +69,14 @@ class TheLastArchive {
   setupEntryScene() {
     const btn = document.getElementById('btn-accept-legacy');
 
+    // Breathing glow hint after 5s idle
+    const idleTimer = setTimeout(() => {
+      btn.classList.add('idle-hint');
+    }, 5000);
+
     btn.addEventListener('click', async () => {
+      clearTimeout(idleTimer);
+      btn.classList.remove('idle-hint');
       // Initialize audio on first user interaction
       audio.init();
       audio.startAmbient();
@@ -208,7 +215,7 @@ class TheLastArchive {
         <span class="danger-note">${artifact.dangerNote}</span>
       </div>
 
-      <div class="card-activate">激活遗物</div>
+      <div class="card-activate">触碰以同步</div>
     `;
 
     // Randomize floating animation per card
@@ -218,10 +225,14 @@ class TheLastArchive {
 
     // Card click → artifact activation
     card.addEventListener('click', () => {
-      // Mobile: skip animation chain, directly open Bilibili
+      // Mobile: flash hint then open Bilibili
       const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
       if (isMobile) {
-        window.open(`https://www.bilibili.com/video/${artifact.bvid}/`, '_blank');
+        card.style.boxShadow = '0 0 30px rgba(201,169,110,0.6)';
+        setTimeout(() => {
+          window.open(`https://www.bilibili.com/video/${artifact.bvid}/`, '_blank');
+          card.style.boxShadow = '';
+        }, 400);
         this.observerCount++;
         this.updateObserverCount();
         return;

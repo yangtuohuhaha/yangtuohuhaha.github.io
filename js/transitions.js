@@ -178,9 +178,8 @@ class TransitionManager {
     await this.animateFlash(1, 0.4);
     audio.playWhoosh(0.5);
 
-    // 7. Text reveal: "知识载体连接中……" → "BILIBILI"
+    // 7. Text reveal
     await this.revealText('知识载体连接中……', 1000);
-    await this.revealText('BILIBILI', 800);
 
     // 8. Cleanup transition effects
     await this.delay(200);
@@ -228,37 +227,28 @@ class TransitionManager {
     const codeEl = document.getElementById('projection-code');
     const fallbackBtn = document.getElementById('btn-fallback-bilibili');
 
-    // Player embed URL
     const playerUrl = `https://player.bilibili.com/player.html?bvid=${bvid}&page=1&autoplay=1&high_quality=1&as_wide=1&danmaku=0`;
 
-    // Set metadata
     nameEl.textContent = artifactData.artifactName;
     codeEl.textContent = artifactData.civilizationCode;
 
-    // Update fallback button link
     if (fallbackBtn) {
       fallbackBtn.href = directUrl;
     }
 
-    // Track if iframe loads successfully
     let iframeLoaded = false;
     const onLoad = () => { iframeLoaded = true; };
     iframe.addEventListener('load', onLoad, { once: true });
 
-    // Fallback: if iframe fails to load in 3s, open in new tab
     this._projectionTimeout = setTimeout(() => {
       if (!iframeLoaded) {
         window.open(directUrl, '_blank');
       }
     }, 3000);
 
-    // Load iframe
     iframe.src = playerUrl;
-
-    // Show overlay
     overlay.classList.add('active');
     overlay.classList.remove('closing');
-
     audio.playChime();
   }
 
@@ -275,13 +265,12 @@ class TransitionManager {
     }
 
     overlay.classList.add('closing');
-
     audio.playImpact();
 
     setTimeout(() => {
       overlay.classList.remove('active');
       overlay.classList.remove('closing');
-      iframe.src = ''; // Stop video
+      iframe.src = '';
     }, 400);
   }
 

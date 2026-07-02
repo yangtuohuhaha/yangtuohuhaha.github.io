@@ -108,6 +108,31 @@ body {
   pointer-events: none;
 }
 
+/* Chronicle fragments — ghost text drifting in entry background */
+.chronicle-fragments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.chronicle-fragment {
+  position: absolute;
+  font-family: var(--font-cjk);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(200,164,78,0.15);
+  white-space: nowrap;
+  animation: chronicleDrift 30s linear infinite;
+}
+
+@keyframes chronicleDrift {
+  0% { transform: translateY(0); opacity: 0.15; }
+  30% { opacity: 0.25; }
+  70% { opacity: 0.1; }
+  100% { transform: translateY(-60px); opacity: 0; }
+}
+
 .entry-content {
   position: relative;
   z-index: 1;
@@ -201,11 +226,10 @@ body {
 
 /* Entry hint */
 .entry-hint {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
-  color: rgba(136,136,152,0.5);
-  text-transform: uppercase;
+  font-family: var(--font-cjk);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: rgba(200,164,78,0.45);
 }
 
 /* Legacy Button */
@@ -291,6 +315,17 @@ body {
 
 .btn-legacy:active {
   transform: scale(0.98);
+}
+
+/* Breathing glow after 5s idle */
+.btn-legacy.idle-hint .btn-legacy-glow {
+  opacity: 1;
+  animation: breatheGlow 3s ease-in-out infinite;
+}
+
+@keyframes breatheGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }
 
 /* ============================================================
@@ -434,6 +469,16 @@ body {
   color: var(--white-dim);
 }
 
+.complete-next {
+  font-family: var(--font-cjk);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(136,136,152,0.5);
+  margin-top: 0.6rem;
+  opacity: 0;
+  animation: fadeIn 0.8s ease 0.5s forwards;
+}
+
 /* ============================================================
    SCENE 3 — ARCHIVE INTERFACE
    ============================================================ */
@@ -514,6 +559,18 @@ body {
   background: rgba(200,164,78,0.1);
   color: var(--gold-bright);
   box-shadow: 0 0 15px rgba(200,164,78,0.2);
+}
+
+/* Select hint */
+.archive-select-hint {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.15em;
+  color: rgba(200,164,78,0.35);
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: -0.5rem 0 0.5rem;
 }
 
 /* Cards Grid */
@@ -1257,6 +1314,75 @@ body {
   }
 }
 
+/* ============================================================
+   ARTIFACT DETAIL VIEW
+   ============================================================ */
+.artifact-detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 3rem;
+  height: 100%;
+  text-align: center;
+}
+
+.artifact-detail-flavor {
+  font-family: var(--font-cinzel);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(201,169,110,0.4);
+  line-height: 1.8;
+  max-width: 600px;
+}
+
+.artifact-detail-desc {
+  font-family: var(--font-cjk);
+  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
+  color: var(--white-dim);
+  line-height: 1.8;
+  max-width: 500px;
+  opacity: 0.8;
+}
+
+.artifact-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.artifact-detail-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.detail-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: rgba(136,136,152,0.5);
+  text-transform: uppercase;
+  min-width: 70px;
+  text-align: right;
+}
+
+.detail-value {
+  font-family: var(--font-cjk);
+  font-size: 0.75rem;
+  color: var(--white-dim);
+  letter-spacing: 0.06em;
+}
+
+.detail-real {
+  color: rgba(200,164,78,0.5);
+  font-style: italic;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .projection-frame {
@@ -1283,5 +1409,18 @@ body {
 
   .btn-close-text {
     display: none;
+  }
+
+  .artifact-detail {
+    padding: 1.5rem;
+    gap: 1.2rem;
+  }
+
+  .artifact-detail-flavor {
+    font-size: 1rem;
+  }
+
+  .artifact-detail-desc {
+    font-size: 0.75rem;
   }
 }
