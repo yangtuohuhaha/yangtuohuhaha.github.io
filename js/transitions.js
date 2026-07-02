@@ -212,19 +212,24 @@ class TransitionManager {
    * Open knowledge projection player with Bilibili iframe.
    */
   openProjection(artifactData) {
+    const bvid = artifactData.bvid;
+    const directUrl = `https://www.bilibili.com/video/${bvid}/`;
+
+    // Mobile: skip embedded player, go straight to Bilibili
+    const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
+    if (isMobile) {
+      window.open(directUrl, '_blank');
+      return;
+    }
+
     const overlay = document.getElementById('projection-overlay');
     const iframe = document.getElementById('projection-iframe');
     const nameEl = document.getElementById('projection-name');
     const codeEl = document.getElementById('projection-code');
     const fallbackBtn = document.getElementById('btn-fallback-bilibili');
 
-    const bvid = artifactData.bvid;
-
-    // Player embed URL (must use https:// explicitly for local file:// access)
+    // Player embed URL
     const playerUrl = `https://player.bilibili.com/player.html?bvid=${bvid}&page=1&autoplay=1&high_quality=1&as_wide=1&danmaku=0`;
-
-    // Fallback: direct Bilibili video page
-    const directUrl = `https://www.bilibili.com/video/${bvid}/`;
 
     // Set metadata
     nameEl.textContent = artifactData.artifactName;
@@ -345,8 +350,18 @@ class TransitionManager {
     await this.delay(400);
     statusText.textContent = '';
     syncComplete.classList.remove('hidden');
-    progressFill.style.background = '#5ef7ff';
-    progressFill.style.boxShadow = '0 0 20px #5ef7ff';
+    progressFill.style.background = '#c9a96e';
+    progressFill.style.boxShadow = '0 0 20px rgba(201,169,110,0.5)';
+
+    // Fade sync UI to transparency
+    const syncContent = document.querySelector('.sync-content');
+    if (syncContent) {
+      gsap.to(syncContent, {
+        opacity: 0.3,
+        duration: 1.5,
+        ease: 'power2.out',
+      });
+    }
 
     audio.playChime();
   }

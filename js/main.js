@@ -25,6 +25,9 @@ class TheLastArchive {
 
     // Update observer count display
     this.updateObserverCount();
+
+    // Show random civilization broadcast
+    this.showRandomBroadcast();
   }
 
   /* ================================================================
@@ -38,14 +41,19 @@ class TheLastArchive {
     const button = entryEl.querySelector('.entry-actions');
     const hint = entryEl.querySelector('.entry-hint');
 
-    // Start with elements invisible
-    gsap.set([titleContainer, subtitle, button, hint], { opacity: 0, y: 30 });
+    // Start with elements invisible, title blurred
+    gsap.set([subtitle, button, hint], { opacity: 0, y: 30 });
+    gsap.set(titleContainer, { opacity: 0, filter: 'blur(12px)', letterSpacing: '0.5em' });
 
     // Staggered entrance
     const tl = gsap.timeline({ delay: 0.5 });
 
     tl.to(titleContainer, {
-      opacity: 1, y: 0, duration: 1.8, ease: 'power3.out',
+      opacity: 1,
+      filter: 'blur(0px)',
+      letterSpacing: '0em',
+      duration: 2.2,
+      ease: 'power3.out',
     })
     .to(subtitle, {
       opacity: 1, y: 0, duration: 1.2, ease: 'power2.out',
@@ -200,12 +208,13 @@ class TheLastArchive {
         <span class="danger-note">${artifact.dangerNote}</span>
       </div>
 
-      <div class="card-real">
-        ▸ ${artifact.realCourse} · ${artifact.realTeacher}
-      </div>
-
       <div class="card-activate">激活遗物</div>
     `;
+
+    // Randomize floating animation per card
+    const floatDuration = 4 + Math.random() * 2; // 4-6s
+    const floatDelay = Math.random() * -6; // negative delay = random start phase
+    card.style.animation = `float-card ${floatDuration}s ease-in-out ${floatDelay}s infinite`;
 
     // Card click → artifact activation
     card.addEventListener('click', async () => {
@@ -238,6 +247,23 @@ class TheLastArchive {
     const el = document.getElementById('observer-count');
     if (el) {
       el.textContent = this.observerCount;
+    }
+  }
+
+  showRandomBroadcast() {
+    const broadcasts = [
+      '今日 127 名观测者与"张量空间操控教义"建立同步。',
+      '警告：Archive 005 检测到异常知识潮汐。建议观测者提前同步。',
+      '文明预言：下一个觉醒周期将在 Epoch 7 降临。',
+      '档案记录：连续 72 小时无观测者退出同步。文明稳定。',
+      '"大罗洞玄·因果律初解"今日被 203 名观测者同时访问。知识共鸣场正在形成。',
+      '注意：观测者同步深度已达历史最高水平。建议适当休息。',
+      'Archive 003 报告：虚空计算创世协议被高频调用。创世之力正在觉醒。',
+      '跨文明广播：检测到另一个文明分支正在接近本档案库。来源未知。',
+    ];
+    const el = document.getElementById('broadcast-text');
+    if (el) {
+      el.textContent = broadcasts[Math.floor(Math.random() * broadcasts.length)];
     }
   }
 }

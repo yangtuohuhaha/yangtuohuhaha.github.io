@@ -120,11 +120,11 @@ const ARTIFACTS = [
 
 // Categories for filtering
 const CATEGORIES = {
-  all: { label: '全部遗物', icon: '◆' },
-  mathematics: { label: '数学遗物', icon: '◈' },
-  computation: { label: '计算遗物', icon: '⬡' },
-  engineering: { label: '工程遗物', icon: '◎' },
-  language: { label: '语言遗物', icon: '◇' },
+  all: { label: '全部档案', icon: '◆' },
+  mathematics: { label: '因果律系', icon: '◈' },
+  computation: { label: '创世协议', icon: '⬡' },
+  engineering: { label: '物质法则', icon: '◎' },
+  language: { label: '跨文明同步', icon: '◇' },
 };
 
 // Get unique categories from artifacts
