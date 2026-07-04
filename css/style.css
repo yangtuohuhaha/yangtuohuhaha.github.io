@@ -1406,6 +1406,56 @@ body {
 }
 
 /* ============================================================
+   MOBILE SYNC OVERLAY
+   ============================================================ */
+.mobile-sync-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(2,0,16,0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: background 0.4s ease;
+}
+.mobile-sync-overlay.active {
+  background: rgba(2,0,16,0.95);
+}
+.mobile-sync-content {
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.mobile-sync-overlay.active .mobile-sync-content {
+  opacity: 1;
+  transform: scale(1);
+}
+.mobile-sync-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1rem, 4vw, 1.4rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #c9a96e;
+  text-shadow: 0 0 25px rgba(201,169,110,0.5);
+  margin-bottom: 1rem;
+}
+.mobile-sync-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.4), transparent);
+  margin: 0 auto 1rem;
+}
+.mobile-sync-status {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: rgba(136,152,136,0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 @media (max-width: 768px) {

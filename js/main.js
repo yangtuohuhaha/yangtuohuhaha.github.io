@@ -660,14 +660,43 @@ class TheLastArchive {
 
     // Card click → artifact activation
     card.addEventListener('click', () => {
-      // Mobile: flash hint then open Bilibili
+      // Mobile: cinematic sync → Bilibili
       const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
       if (isMobile) {
-        card.style.boxShadow = '0 0 30px rgba(201,169,110,0.6)';
-        setTimeout(() => {
-          window.open(`https://www.bilibili.com/video/${artifact.bvid}/`, '_blank');
-          card.style.boxShadow = '';
-        }, 400);
+        // Pulse the card
+        card.style.boxShadow = '0 0 40px rgba(201,169,110,0.8), 0 0 80px rgba(201,169,110,0.3)';
+        card.style.transform = 'scale(1.05)';
+        card.style.transition = 'all 0.3s ease';
+
+        // Show sync overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'mobile-sync-overlay';
+        overlay.innerHTML = `
+          <div class="mobile-sync-content">
+            <p class="mobile-sync-name">${artifact.artifactName}</p>
+            <div class="mobile-sync-line"></div>
+            <p class="mobile-sync-status">正在同步知识载体……</p>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+
+        // Animate overlay in
+        await this.delay(100);
+        overlay.classList.add('active');
+
+        // Hold the moment
+        await this.delay(1500);
+
+        // Open Bilibili
+        window.open(`https://www.bilibili.com/video/${artifact.bvid}/`, '_blank');
+
+        // Cleanup after redirect
+        await this.delay(600);
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 500);
+        card.style.boxShadow = '';
+        card.style.transform = '';
+
         this.observerCount++;
         this.updateObserverCount();
         return;
