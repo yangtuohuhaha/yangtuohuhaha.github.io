@@ -76,6 +76,403 @@ body {
 }
 
 /* ============================================================
+   PRELUDE — FAKE WINDOWS BOOT → BSOD
+   ============================================================ */
+#scene-prelude {
+  z-index: 50; /* above all other scenes */
+}
+
+/* Stage 1: Windows-style boot window */
+.prelude-boot {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #3a6bc5 0%, #1a3a7a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.boot-window {
+  width: 460px;
+  max-width: 90vw;
+  background: #ece9d8;
+  border: 2px solid #0054e3;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.35);
+  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+}
+
+.boot-titlebar {
+  background: linear-gradient(180deg, #0058ee 0%, #3188ff 8%, #0054e3 40%, #003bb3 88%, #003499 100%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 4px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px 6px 0 0;
+  cursor: default;
+}
+
+.boot-title-btn {
+  background: #d44024;
+  color: white;
+  width: 18px;
+  height: 18px;
+  border-radius: 2px;
+  font-size: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.boot-body {
+  padding: 24px 20px;
+}
+
+.boot-heading {
+  font-size: 0.8rem;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.boot-progress-track {
+  width: 100%;
+  height: 22px;
+  background: white;
+  border: 1px solid #7f9db9;
+  border-bottom-color: #d4d0c8;
+  border-right-color: #d4d0c8;
+  margin-bottom: 10px;
+  padding: 2px;
+}
+
+.boot-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: repeating-linear-gradient(
+    90deg,
+    #3168d5 0px,
+    #3168d5 12px,
+    #99b4e8 12px,
+    #99b4e8 24px
+  );
+  transition: width 0.3s ease;
+}
+
+.boot-status {
+  font-size: 0.72rem;
+  color: #333;
+}
+
+/* Stage 2: Glitch overlay */
+.prelude-glitch {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: 2;
+}
+
+.prelude-glitch.active {
+  animation: glitchFlash 0.15s ease infinite;
+}
+
+@keyframes glitchFlash {
+  0% { background: rgba(0,0,255,0.4); transform: translate(0); }
+  25% { background: rgba(255,0,0,0.3); transform: translate(-4px, 2px); }
+  50% { background: transparent; transform: translate(3px, -3px); }
+  75% { background: rgba(0,255,0,0.2); transform: translate(-2px, -1px); }
+  100% { background: rgba(0,0,255,0.3); transform: translate(0); }
+}
+
+/* CRT damage overlay — continuous effect during BSOD shake */
+.crt-damage {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.crt-damage.active {
+  opacity: 1;
+  /* Heavy scan lines + color bleed */
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 3px, transparent 3px, transparent 6px),
+    linear-gradient(180deg, rgba(255,0,0,0.12) 0%, transparent 15%, rgba(0,255,255,0.12) 45%, transparent 60%, rgba(255,0,255,0.1) 85%, transparent 100%),
+    radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.7) 100%);
+  filter: brightness(1.4) contrast(1.3) saturate(0.4);
+  animation: crtFlicker 0.12s ease-in-out infinite;
+}
+
+@keyframes crtFlicker {
+  0%, 100% { opacity: 1; }
+  30% { opacity: 0.85; filter: brightness(1.6) contrast(1.5) saturate(0.2); }
+  60% { opacity: 0.95; }
+  80% { opacity: 0.7; filter: brightness(2) contrast(1.8) saturate(0); }
+}
+
+/* Stage 3: BSOD */
+.prelude-bsod {
+  position: absolute;
+  inset: 0;
+  background: #0000aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  font-family: 'Courier New', 'SimSun', monospace;
+}
+
+.bsod-content {
+  color: #ffffff;
+  font-size: 0.72rem;
+  line-height: 1.6;
+  max-width: 650px;
+  padding: 2rem;
+}
+
+.bsod-title {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.bsod-subtitle {
+  margin-bottom: 0;
+}
+
+.bsod-code {
+  font-weight: bold;
+  background: #ffffff;
+  color: #0000aa;
+  display: inline-block;
+  padding: 0 4px;
+  font-size: 0.68rem;
+}
+
+.bsod-tech {
+  font-size: 0.65rem;
+}
+
+.bsod-bottom {
+  margin-top: 2rem;
+  font-size: 0.65rem;
+}
+
+/* Stage 4: Cinematic narrative */
+.prelude-narrative {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 4;
+  overflow: hidden;
+}
+
+#narrative-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.narrative-ui-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+}
+
+/* Phase 01-02: System trace (top-left) */
+.narr-trace {
+  position: absolute;
+  top: 10%;
+  left: 8%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.narr-trace.visible { opacity: 1; }
+.narr-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  color: rgba(94,234,212,0.7);
+}
+.narr-sub {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: rgba(136,152,136,0.5);
+}
+
+/* Phase 02: Spatial tags */
+.narr-spatial-tag {
+  position: absolute;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: rgba(232,64,64,0.6);
+  border: 1px solid rgba(232,64,64,0.3);
+  padding: 0.7rem 1.4rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: tagDrift 4s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(232,64,64,0.2);
+}
+.narr-spatial-tag.visible { opacity: 1; }
+#narr-tag1 { top: 30%; left: 15%; }
+#narr-tag2 { top: 45%; right: 12%; }
+@keyframes tagDrift {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(4px, -3px); }
+}
+
+/* Phase 03: Identity table (bottom-left) */
+.narr-identity {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.narr-identity.visible { opacity: 1; }
+.narr-id-row {
+  display: flex;
+  gap: 2.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  color: rgba(136,152,136,0.4);
+  line-height: 2;
+}
+.narr-id-row span:first-child { width: 140px; text-align: right; }
+.narr-id-row.changed span:last-child { color: rgba(232,64,64,0.7); }
+
+/* Phase 04: Observer result (center) */
+.narr-observer {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.narr-observer.visible { opacity: 1; }
+.narr-obs-title {
+  font-size: 1.1rem;
+  letter-spacing: 0.25em;
+  color: rgba(201,169,110,0.7);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(201,169,110,0.2);
+}
+.narr-obs-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: rgba(136,152,136,0.4);
+  line-height: 2;
+}
+.narr-obs-row span:first-child { width: 90px; text-align: right; }
+.narr-obs-unstable { color: rgba(232,64,64,0.6); }
+
+/* Phase 05: System note (center, subtle) */
+.narr-note {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.narr-note.visible { opacity: 1; }
+.narr-note span:first-child { color: rgba(94,234,212,0.5); }
+.narr-note span:last-child { color: rgba(136,152,136,0.3); }
+
+/* Phase 06: Choice layer (along a perspective line) */
+.narr-choices {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: all;
+}
+.narr-choices.visible { opacity: 1; }
+.narr-choice-btn {
+  background: transparent;
+  border: 1px solid rgba(136,152,136,0.25);
+  color: rgba(136,152,136,0.55);
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  padding: 0.8rem 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+.narr-choice-btn:nth-child(1) { transform: translateX(-40px); }
+.narr-choice-btn:nth-child(2) { transform: translateX(0); }
+.narr-choice-btn:nth-child(3) { transform: translateX(40px); }
+.narr-choice-btn:hover {
+  border-color: rgba(94,234,212,0.6);
+  color: rgba(94,234,212,0.9);
+  box-shadow: 0 0 25px rgba(94,234,212,0.15);
+}
+.narr-choices.dim { pointer-events: none; }
+.narr-choices.dim .narr-choice-btn { opacity: 0.2; }
+
+/* Phase 07: Final title */
+.narr-final {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.narr-final.visible { opacity: 1; }
+.narr-final-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  color: rgba(201,169,110,0.8);
+  text-shadow: 0 0 40px rgba(201,169,110,0.4), 0 0 80px rgba(201,169,110,0.15);
+  margin-bottom: 1.2rem;
+}
+.narr-final-sub {
+  font-family: 'Share Tech Mono', 'Courier New', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  color: rgba(136,152,136,0.4);
+}
+
+/* Stage 5: Black screen */
+.prelude-black {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 4;
+}
+
+/* ============================================================
    SCENE SYSTEM
    ============================================================ */
 .scene {
@@ -131,100 +528,114 @@ body {
 .entry-content {
   position: relative;
   z-index: 1;
-  text-align: center;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2.5rem;
+  justify-content: center;
 }
 
-/* Title */
-.title-container {
-  position: relative;
-  padding: 3rem 4rem;
+/* Archive terminal */
+.archive-terminal {
+  width: 480px;
+  max-width: 90vw;
+  background: rgba(10,10,30,0.7);
+  border: 1px solid rgba(201,169,110,0.2);
+  box-shadow:
+    0 0 40px rgba(0,0,0,0.6),
+    inset 0 0 80px rgba(201,169,110,0.03);
 }
 
-.title-main {
+.terminal-header {
   display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 1rem;
+  background: rgba(201,169,110,0.06);
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: rgba(201,169,110,0.5);
+  text-transform: uppercase;
 }
 
-.title-line {
-  display: block;
+.terminal-body {
+  padding: 2rem 2rem 1.8rem;
+}
+
+.terminal-line {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  color: rgba(136,136,152,0.6);
+  line-height: 2;
+}
+
+.terminal-status {
+  color: rgba(94,234,212,0.5);
+  margin-bottom: 1.2rem;
+}
+
+.terminal-designation {
   font-family: var(--font-cinzel);
-  font-weight: 400;
-  font-size: clamp(1.8rem, 4vw, 3rem);
-  letter-spacing: 0.6em;
-  color: var(--gold-dim);
-  text-shadow: 0 0 40px rgba(200,164,78,0.3);
-}
-
-.title-emphasis {
-  font-weight: 900;
-  font-size: clamp(3.5rem, 8vw, 6.5rem);
-  letter-spacing: 0.35em;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
   color: var(--gold-bright);
-  text-shadow:
-    0 0 20px rgba(240,208,104,0.6),
-    0 0 60px rgba(240,208,104,0.3),
-    0 0 120px rgba(200,164,78,0.2),
-    0 2px 4px rgba(0,0,0,0.8);
+  text-shadow: 0 0 30px rgba(201,169,110,0.4);
+  text-align: center;
+  padding: 0.6rem 0 0.8rem;
   animation: titleGlow 4s ease-in-out infinite;
 }
 
 @keyframes titleGlow {
-  0%, 100% { text-shadow: 0 0 20px rgba(240,208,104,0.6), 0 0 60px rgba(240,208,104,0.3), 0 0 120px rgba(200,164,78,0.2); }
-  50% { text-shadow: 0 0 30px rgba(240,208,104,0.9), 0 0 90px rgba(240,208,104,0.5), 0 0 180px rgba(200,164,78,0.35); }
+  0%, 100% { text-shadow: 0 0 20px rgba(201,169,110,0.4), 0 0 60px rgba(201,169,110,0.2); }
+  50% { text-shadow: 0 0 30px rgba(201,169,110,0.7), 0 0 90px rgba(201,169,110,0.35); }
 }
 
-/* Title corner runes */
-.title-rune {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  opacity: 0.5;
-}
-.title-rune::before,
-.title-rune::after {
-  content: '';
-  position: absolute;
-  background: var(--gold-primary);
-}
-.title-rune.top-left { top: 0; left: 0; }
-.title-rune.top-right { top: 0; right: 0; }
-.title-rune.bottom-left { bottom: 0; left: 0; }
-.title-rune.bottom-right { bottom: 0; right: 0; }
-
-.title-rune::before {
-  width: 100%;
+.terminal-divider {
   height: 1px;
-  top: 50%;
-  left: 0;
-}
-.title-rune::after {
-  width: 1px;
-  height: 100%;
-  left: 50%;
-  top: 0;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.2), transparent);
+  margin: 0.8rem 0;
 }
 
-/* Subtitle */
-.subtitle {
-  font-family: var(--font-cinzel);
-  font-size: clamp(0.8rem, 1.5vw, 1.1rem);
-  letter-spacing: 0.25em;
-  color: var(--white-dim);
-  max-width: 600px;
-  line-height: 1.8;
+.terminal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
 }
 
-/* Entry hint */
-.entry-hint {
+.terminal-label {
+  color: rgba(136,136,152,0.4);
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  margin-right: 1rem;
+}
+
+.terminal-value {
+  color: rgba(201,169,110,0.55);
+}
+
+.terminal-motto {
+  text-align: center;
+  color: rgba(201,169,110,0.3);
   font-family: var(--font-cjk);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: rgba(200,164,78,0.45);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.3rem 0;
+}
+
+.terminal-action {
+  display: flex;
+  justify-content: center;
+  margin: 1.2rem 0 0.8rem;
+}
+
+.terminal-hint {
+  text-align: center;
+  color: rgba(201,169,110,0.3);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
 }
 
 /* Legacy Button */
@@ -733,6 +1144,31 @@ body {
   color: rgba(200,164,78,0.6);
 }
 
+/* Resonance badge (daily featured relic) */
+.resonance-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.12em;
+  color: rgba(94,234,212,0.6);
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(94,234,212,0.25);
+  padding: 0.2rem 0.5rem;
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Synced relic card */
+.artifact-card.synced::before {
+  opacity: 1;
+  background: linear-gradient(90deg, transparent, rgba(94,234,212,0.3), transparent);
+}
+
+.artifact-card.resonant {
+  border: 1px solid rgba(201,169,110,0.4);
+}
+
 /* Archive Footer */
 .archive-footer {
   position: fixed;
@@ -1053,6 +1489,24 @@ body {
 
 .no-scroll {
   overflow: hidden !important;
+}
+
+/* Idle energy-save mode */
+body.idle-mode .archive-terminal,
+body.idle-mode .artifact-card {
+  transition: opacity 2s ease, filter 2s ease;
+  opacity: 0.5;
+  filter: brightness(0.6);
+}
+
+body.idle-mode .broadcast-panel {
+  opacity: 0.3;
+  transition: opacity 2s ease;
+}
+
+body.idle-mode #bg-canvas {
+  filter: brightness(0.5);
+  transition: filter 2s ease;
 }
 
 /* Screen shake */

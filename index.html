@@ -32,29 +32,133 @@
     <span class="chronicle-fragment" style="top:55%;right:20%;animation-delay:5s;">Epoch 9 · 文明飞升。档案库进入沉睡</span>
   </div>
 
+  <!-- ==================== PRELUDE: FAKE BOOT → BSOD ==================== -->
+  <div id="scene-prelude" class="scene active">
+    <!-- Stage 1: Fake Windows boot -->
+    <div id="prelude-boot" class="prelude-boot">
+      <div class="boot-window">
+        <div class="boot-titlebar">
+          <span class="boot-title-text">BILIBILI 知识平台 安装程序 v3.2.1</span>
+          <span class="boot-title-btn">✕</span>
+        </div>
+        <div class="boot-body">
+          <p class="boot-heading">正在启动 BILIBILI 知识平台……</p>
+          <div class="boot-progress-track">
+            <div id="boot-progress-fill" class="boot-progress-fill"></div>
+          </div>
+          <p id="boot-status" class="boot-status">正在初始化用户认证模块……</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2: Glitch overlay -->
+    <div id="prelude-glitch" class="prelude-glitch hidden"></div>
+
+    <!-- CRT damage overlay -->
+    <div id="crt-damage" class="crt-damage hidden"></div>
+
+    <!-- Stage 3: BSOD -->
+    <div id="prelude-bsod" class="prelude-bsod hidden">
+      <div class="bsod-content">
+        <p class="bsod-title">A problem has been detected and Windows has been shut down to prevent damage to your computer.</p>
+        <br>
+        <p class="bsod-subtitle">The problem seems to be caused by the following file: KERNEL_KNOWLEDGE.SYS</p>
+        <br>
+        <p class="bsod-code">PAGE_FAULT_IN_NONPAGED_AREA</p>
+        <br>
+        <p>If this is the first time you've seen this stop error screen, restart your computer. If this screen appears again, follow these steps:</p>
+        <br>
+        <p>Check to make sure any new hardware or software is properly installed. If this is a new installation, ask your hardware or software manufacturer for any Windows updates you might need.</p>
+        <br>
+        <p>If problems continue, disable or remove any newly installed hardware or software. Disable BIOS memory options such as caching or shadowing.</p>
+        <br>
+        <p class="bsod-tech">Technical information:</p>
+        <p class="bsod-tech">*** STOP: 0xC1V1L1Z4T10N_4SC3NS10N (0x000000E7, 0x00000001, 0x00000003, 0x00000005)</p>
+        <br>
+        <p class="bsod-tech">*** KERNEL_KNOWLEDGE.SYS — Address F7A3B2C1 base at F7A3A000, DateStamp 3d2a1f09</p>
+        <br>
+        <br>
+        <p class="bsod-bottom">Beginning dump of physical memory. Contact your system administrator or technical support group for further assistance.</p>
+      </div>
+    </div>
+
+    <!-- Stage 4: Cinematic narrative -->
+    <div id="prelude-narrative" class="prelude-narrative hidden">
+      <canvas id="narrative-canvas"></canvas>
+      <div class="narrative-ui-layer">
+        <!-- Phase 01-02: System trace -->
+        <div id="narr-trace" class="narr-trace hidden">
+          <span class="narr-label">SYSTEM TRACE</span>
+          <span class="narr-sub">reconstructing traversal vector...</span>
+        </div>
+        <!-- Phase 02: Spatial labels -->
+        <div id="narr-tag1" class="narr-spatial-tag hidden">[ 非访问路径 ]</div>
+        <div id="narr-tag2" class="narr-spatial-tag hidden">[ 已废弃表层结构 ]</div>
+        <!-- Phase 03: Identity table -->
+        <div id="narr-identity" class="narr-identity hidden">
+          <div class="narr-id-row"><span>Visitor</span><span id="narr-id-v">—</span></div>
+          <div class="narr-id-row"><span>User</span><span id="narr-id-u">—</span></div>
+          <div class="narr-id-row"><span>Entity Profile</span><span id="narr-id-e">—</span></div>
+        </div>
+        <!-- Phase 04: Observer result -->
+        <div id="narr-observer" class="narr-observer hidden">
+          <div class="narr-obs-title">Observer Node</div>
+          <div class="narr-obs-row"><span>confidence</span><span>0.78</span></div>
+          <div class="narr-obs-row"><span>status</span><span class="narr-obs-unstable">unstable</span></div>
+        </div>
+        <!-- Phase 05: System note -->
+        <div id="narr-note" class="narr-note hidden">
+          <span>SYSTEM NOTE:</span>
+          <span>continuation decision deferred</span>
+        </div>
+        <!-- Phase 06: Choice layer -->
+        <div id="narr-choices" class="narr-choices hidden">
+          <button class="narr-choice-btn" data-choice="01">(01) 接入核心层</button>
+          <button class="narr-choice-btn" data-choice="02">(02) 扫描遗物节点</button>
+          <button class="narr-choice-btn" data-choice="03">(03) 停留在外层</button>
+        </div>
+        <!-- Phase 07: Final -->
+        <div id="narr-final" class="narr-final hidden">
+          <div class="narr-final-title">THE LAST ARCHIVE</div>
+          <div class="narr-final-sub">loading core layer...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 5: Black transition -->
+    <div id="prelude-black" class="prelude-black hidden"></div>
+  </div>
+
   <!-- ==================== SCENE 1: ENTRY ==================== -->
-  <div id="scene-entry" class="scene active">
+  <div id="scene-entry" class="scene">
     <div class="entry-vignette"></div>
     <div class="entry-content">
-      <div class="title-container">
-        <div class="title-rune top-left"></div>
-        <div class="title-rune top-right"></div>
-        <h1 class="title-main">
-          <span class="title-line">THE LAST</span>
-          <span class="title-line title-emphasis">ARCHIVE</span>
-        </h1>
-        <div class="title-rune bottom-left"></div>
-        <div class="title-rune bottom-right"></div>
+      <div class="archive-terminal">
+        <div class="terminal-header">
+          <span>ARCHIVE ACCESS TERMINAL</span>
+          <span>Node 07 · Alpha Sector</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line terminal-status">> 档案库状态：已就绪</div>
+          <div class="terminal-designation">THE LAST ARCHIVE</div>
+          <div class="terminal-divider"></div>
+          <div class="terminal-info">
+            <div class="terminal-line"><span class="terminal-label">可访问遗物</span><span class="terminal-value">8</span></div>
+            <div class="terminal-line"><span class="terminal-label">通信协议</span><span class="terminal-value">观测者级</span></div>
+            <div class="terminal-line"><span class="terminal-label">安全状态</span><span class="terminal-value">等待接入</span></div>
+          </div>
+          <div class="terminal-divider"></div>
+          <div class="terminal-line terminal-motto">文明会熄灭。知识不会。</div>
+          <div class="terminal-action">
+            <button id="btn-accept-legacy" class="btn-legacy">
+              <span class="btn-legacy-border"></span>
+              <span class="btn-legacy-text">请求接入</span>
+              <span class="btn-legacy-glow"></span>
+            </button>
+          </div>
+          <div class="terminal-line terminal-hint">▸ 触碰信标以接入档案</div>
+        </div>
       </div>
-      <p class="subtitle">文明会熄灭。知识不会。</p>
-      <div class="entry-actions">
-        <button id="btn-accept-legacy" class="btn-legacy">
-          <span class="btn-legacy-border"></span>
-          <span class="btn-legacy-text">接受文明传承</span>
-          <span class="btn-legacy-glow"></span>
-        </button>
-      </div>
-      <p class="entry-hint">触碰信标以接入档案</p>
     </div>
   </div>
 

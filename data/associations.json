@@ -1,0 +1,109 @@
+{
+  "nodes": [
+    {
+      "id": "CN-CS-001",
+      "connectionCount": 3
+    },
+    {
+      "id": "CN-CS-002",
+      "connectionCount": 4
+    },
+    {
+      "id": "CN-ENG-001",
+      "connectionCount": 2
+    },
+    {
+      "id": "CN-LNG-001",
+      "connectionCount": 2
+    },
+    {
+      "id": "CN-MATH-001",
+      "connectionCount": 3
+    },
+    {
+      "id": "CN-MATH-002",
+      "connectionCount": 2
+    },
+    {
+      "id": "CN-MATH-003",
+      "connectionCount": 3
+    },
+    {
+      "id": "CN-MATH-004",
+      "connectionCount": 3
+    }
+  ],
+  "edges": [
+    {
+      "source": "CN-MATH-001",
+      "target": "CN-MATH-002",
+      "type": "convergence",
+      "flavor": "因果律与张量空间在多元维度中交汇。二者合一，可描绘曲面上的流动。"
+    },
+    {
+      "source": "CN-MATH-002",
+      "target": "CN-CS-002",
+      "type": "foundation",
+      "flavor": "张量操控教义是信息结晶架构的底层语言。图与矩阵，本质同源。"
+    },
+    {
+      "source": "CN-MATH-001",
+      "target": "CN-ENG-001",
+      "type": "application",
+      "flavor": "因果律的微分形式，在电磁回路中获得了物理化身。"
+    },
+    {
+      "source": "CN-CS-001",
+      "target": "CN-MATH-003",
+      "type": "tool",
+      "flavor": "创世协议可用于模拟概率分支。每一次随机采样，都是一次平行现实的计算。"
+    },
+    {
+      "source": "CN-MATH-003",
+      "target": "CN-MATH-004",
+      "type": "intersection",
+      "flavor": "概率分支收敛术在离散逻辑领域投射出新的影子。随机图论——两个纪元在对话。"
+    },
+    {
+      "source": "CN-CS-002",
+      "target": "CN-CS-001",
+      "type": "implementation",
+      "flavor": "天启录中的结构，需要创世协议的语言才能被召唤到现实中。"
+    },
+    {
+      "source": "CN-MATH-001",
+      "target": "CN-MATH-003",
+      "type": "foundation",
+      "flavor": "因果律是概率分支的基石。每一次积分，都是在无穷可能性上求和。"
+    },
+    {
+      "source": "CN-LNG-001",
+      "target": "CN-CS-001",
+      "type": "bridge",
+      "flavor": "跨文明同步协议是所有创世协议的前置语言层。"
+    },
+    {
+      "source": "CN-LNG-001",
+      "target": "CN-CS-002",
+      "type": "bridge",
+      "flavor": "数据结构天启录的原始文本，需要语言学同步才能完整解码。"
+    },
+    {
+      "source": "CN-ENG-001",
+      "target": "CN-MATH-004",
+      "type": "intersection",
+      "flavor": "电磁审判系统的底层逻辑门，正是离散逻辑矩阵的物理投射。"
+    },
+    {
+      "source": "CN-MATH-004",
+      "target": "CN-CS-002",
+      "type": "foundation",
+      "flavor": "离散逻辑矩阵是信息结晶架构的理论根基。没有集合与图论，数据结构无从结晶。"
+    }
+  ],
+  "meta": {
+    "description": "THE LAST ARCHIVE — 遗物关联图谱",
+    "totalNodes": 8,
+    "totalEdges": 11
+  }
+}
