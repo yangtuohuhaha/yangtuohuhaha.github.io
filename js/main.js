@@ -659,7 +659,7 @@ class TheLastArchive {
     card.style.animation = `float-card ${floatDuration}s ease-in-out ${floatDelay}s infinite`;
 
     // Card click → artifact activation
-    card.addEventListener('click', () => {
+    card.addEventListener('click', async () => {
       // Mobile: cinematic sync → Bilibili
       const isMobile = window.innerWidth < 768 || 'ontouchstart' in window;
       if (isMobile) {
