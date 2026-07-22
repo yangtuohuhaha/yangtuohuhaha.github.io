@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K-pop 模拟经营 Demo</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">K-pop Agency Simulator</p>
+          <h1>小型经纪公司经营台</h1>
+        </div>
+        <div class="topbar-actions" aria-label="存档操作">
+          <button class="ghost-button" id="saveButton" type="button">存档</button>
+          <button class="ghost-button" id="loadButton" type="button">读档</button>
+          <button class="ghost-button danger" id="resetButton" type="button">重开</button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <section class="panel overview-panel" aria-labelledby="overviewTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Company</p>
+              <h2 id="overviewTitle">公司状态</h2>
+            </div>
+            <span class="month-pill" id="monthLabel">第 1 月</span>
+          </div>
+
+          <div class="resource-grid" aria-label="资源状态">
+            <div class="resource-tile">
+              <span>资金</span>
+              <strong id="moneyValue">5000</strong>
+            </div>
+            <div class="resource-tile">
+              <span>粉丝</span>
+              <strong id="fansValue">50</strong>
+            </div>
+            <div class="resource-tile">
+              <span>热度</span>
+              <strong id="popularityValue">20</strong>
+            </div>
+            <div class="resource-tile">
+              <span>档期</span>
+              <strong id="slotValue">4/4</strong>
+            </div>
+            <div class="resource-tile">
+              <span>压力</span>
+              <strong id="pressureValue">20</strong>
+            </div>
+          </div>
+
+          <div class="stage-frame">
+            <img src="assets/stage.svg" alt="练习室与舞台视觉" class="stage-art">
+          </div>
+
+          <div class="trainee-block">
+            <div class="trainee-title">
+              <div>
+                <p class="eyebrow">Trainee</p>
+                <h2>练习生 A</h2>
+              </div>
+              <span id="totalStatLabel">总属性 80</span>
+            </div>
+            <div class="stat-list" id="statList"></div>
+          </div>
+        </section>
+
+        <section class="panel action-panel" aria-labelledby="actionTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Decision</p>
+              <h2 id="actionTitle">本月行程单</h2>
+            </div>
+            <button class="primary-button" id="endMonthButton" type="button">执行本月行程</button>
+          </div>
+
+          <div class="section-strip schedule-strip">
+            <div class="strip-header">
+              <h3>4 周排程</h3>
+              <span>每周 1 个行程</span>
+            </div>
+            <div class="schedule-list" id="scheduleList"></div>
+          </div>
+
+          <div class="section-strip estimate-strip">
+            <h3>月度预估</h3>
+            <div class="estimate-grid">
+              <div class="estimate-tile">
+                <span>预计支出</span>
+                <strong id="estimateCost">0</strong>
+              </div>
+              <div class="estimate-tile">
+                <span>压力变化</span>
+                <strong id="estimatePressure">+0</strong>
+              </div>
+              <div class="estimate-tile wide">
+                <span>本月倾向</span>
+                <strong id="estimateFocus">均衡经营</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-strip comeback-strip">
+            <div class="strip-header">
+              <h3>回归企划</h3>
+              <span id="albumStatus">暂无项目</span>
+            </div>
+
+            <div class="option-group" aria-label="专辑类型">
+              <p>专辑类型</p>
+              <div class="segmented-control" id="typeOptions"></div>
+            </div>
+
+            <div class="option-group" aria-label="主打曲风">
+              <p>主打曲风</p>
+              <div class="segmented-control" id="genreOptions"></div>
+            </div>
+
+            <div class="option-group" aria-label="定价策略">
+              <p>定价策略</p>
+              <div class="segmented-control" id="priceOptions"></div>
+            </div>
+
+            <button class="secondary-button full-width" id="createAlbumButton" type="button">创建回归项目</button>
+          </div>
+        </section>
+
+        <section class="panel log-panel" aria-labelledby="logTitle">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Market</p>
+              <h2 id="logTitle">热搜与档案</h2>
+            </div>
+          </div>
+
+          <div class="section-strip hot-search-strip">
+            <div class="strip-header">
+              <h3>本月热搜榜</h3>
+              <span id="hotSearchStatus">可买 1 条</span>
+            </div>
+            <div class="hot-search-list" id="hotSearchList"></div>
+          </div>
+
+          <div class="report-box" id="currentReport">
+            <p>尚未生成月报。</p>
+          </div>
+          <ol class="log-list" id="logList"></ol>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="modal" id="eventModal">
+      <div class="modal-content">
+        <p class="eyebrow">Hot Search</p>
+        <h2 id="eventTitle">热搜事件</h2>
+        <p id="eventDesc"></p>
+        <div class="modal-actions" id="eventChoices"></div>
+      </div>
+    </dialog>
+
+    <dialog class="modal" id="reportModal">
+      <div class="modal-content">
+        <p class="eyebrow">Monthly Report</p>
+        <h2 id="reportTitle">月度报告</h2>
+        <div class="report-lines" id="reportLines"></div>
+        <div class="modal-actions">
+          <button class="primary-button" id="closeReportButton" type="button">进入下个月</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="game.js"></script>
+  </body>
+</html>
